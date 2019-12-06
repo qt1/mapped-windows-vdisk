@@ -1,8 +1,8 @@
 #mater GPT+3 partitions
-         0       1320960  linear  /dev/loop15    0
+         0       1320960  linear  dev_loop1_template    0
 #windows
    1320960     407549952  linear  /dev/nvme0n1p4 0
 #void 
 408870912     1544652208 zero 
 #backup GPT 
-1953523120          2048  linear  /dev/loop16 0
+1953523120          2048  linear  dev_loop2_template 0
