@@ -20,7 +20,7 @@ This looks safer at the moment ut it is possible that Windows uses this data for
 At the moment this risk seems reasonable..
 
 
-# Instruction
+# Instruction for creating the disk
 
 list the source disk
 
@@ -73,12 +73,42 @@ After DM disk is ready it is possible to get the partitions rom the host like so
 
     partprobe  /dev/mapper/virtual_windows_disk
 
+# Running the mapping
+
+The python script creates loop devices and runs the mapping. It should be called at system start or before running the VM.
+
+    sudo python3 create_mapped_disk.py
+
+
+# Systemd installation
+
+The script and and various files are all located at /vm/windows10-solid
+
+    sudo cp mapped_windows_disk.service /etc/systemd/system
+    sudo chown root:adm /etc/systemd/system/mapped_windows_disk.service
+    sudo chmod 664 /etc/systemd/system/mapped_windows_disk.service
+    sudo systemctl enable mapped_windows_disk
+
+run
+    sudo systemctl run mapped_windows_disk
+
+stop
+    stop systemctl stop mapped_windows_disk
+
+Note: at the moment the stop does not remove the loop devices
+
+
+The following is usefull for debugging systemd service:
+    sudo cp mapped_windows_disk.service /etc/systemd/system && sudo systemctl daemon-reload && sudo systemctl start mapped_windows_disk && journalctl -u mapped_windows_disk
+
+
 # Reference
 
 https://superuser.com/questions/931645/with-linux-mint-as-main-os-dual-boot-windows-7-and-have-a-windows-7-virtual-mac
 
+http://www.linuxvoice.com/issues/005/pyparted.pdf
 
-After DM disk is ready it is possible to get the partitions rom the host like so:
-(not needed for use as a VM disk)
+After DM disk is ready it is possible to get the partitions from the host like so:
+This is for testng only and MUST NOT be done when running the windows VM
 
     partprobe /dev/sdX

@@ -1,0 +1,17 @@
+[Unit]
+Description=Create a special mirrored disk for safer windows VM
+Documentation=https://github.com/qt1/mapped-windows-vdisk
+Before=libvirtd.service
+#TBD OnFailure=
+OnFailureJobMode=ignore-dependencies
+
+[Service]
+Type=simple
+#Restart=no
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 /vm/windows10-solid/create_mapped_disk.py start
+ExecStop=/usr/bin/python3 /vm/windows10-solid/create_mapped_disk.py stop
+
+[Install]
+WantedBy=multi-user.target
+
